@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 import { FaEye,FaEyeSlash } from "react-icons/fa";
-const LoginForm = () => {
+import { Link, useNavigate } from 'react-router-dom';
+const LoginForm  = ({setIsLoggedIn}) => {
+  const navigate=useNavigate();
   const[formData,setFormData]=useState({
     email:"",password:""
   })
@@ -13,21 +16,32 @@ const LoginForm = () => {
       }
     ))
   }
+  function submitHandler(event){
+    event.preventDefault();
+    setIsLoggedIn(true);
+    toast.success("Logged In");
+    navigate("/dashboard");
+  }
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <label>
         <p>Email Address <sub>*</sub></p>
-        <input type="text" value={formData.email} required onChange={changeHandler} placeholder='Enter email id'/>
+        <input type="text" value={formData.email} required onChange={changeHandler} placeholder='Enter email id' name='email'/>
       </label>
 
-      <label>
+      <label> 
         <p>Password <sub>*</sub></p>
-        <input type={showPassword?("text"):("password")} value={formData.password} required onChange={changeHandler} placeholder='Enter Password'/>
+        <input type={showPassword?("text"):("password")} value={formData.password} required onChange={changeHandler} placeholder='Enter Password' name='password'/>
         <span onClick={()=>setShowPassword((prev)=>!prev)}>
           {showPassword?(<FaEyeSlash/>):(<FaEye/>)}
         </span>
+        <Link to="#">
+          <p>Forgot Password</p>
+        </Link>
       </label>
-
+    <button >
+      Sign In
+    </button>
     </form>
   )
 }
