@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
+import toast from 'react-hot-toast';
 import { FaEye,FaEyeSlash } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
-const SignupForm = () => {
+const SignupForm = ({setIsLoggedIn}) => {
+  const navigate=useNavigate();
   const[formData,setFormData]=useState({
     firstName:"",
     LastName:"",
@@ -18,6 +21,16 @@ const SignupForm = () => {
       }
     ))
   }
+  function submitHandler(event){
+      event.preventDefault();
+      if(formData.password!==formData.confirmPassword){
+        toast.error("Password do not match")
+        return;
+      }
+     setIsLoggedIn(true);
+     toast.success("Account Created");
+     navigate('/dashboard');
+  }
     return (
     <div>
       <div>
@@ -28,7 +41,7 @@ const SignupForm = () => {
             Instructor
         </button>
       </div>
-      <form >
+      <form onSubmit={submitHandler}>
         <div>
         <label>
             <p>First Name<sup>*</sup></p>
@@ -63,8 +76,8 @@ const SignupForm = () => {
                       {showPassword?(<FaEyeSlash/>):(<FaEye/>)}
             </span>
         </label>
-        <button>
-            Create Account
+        <button >
+            Create Account 
         </button>
        </div>
         
